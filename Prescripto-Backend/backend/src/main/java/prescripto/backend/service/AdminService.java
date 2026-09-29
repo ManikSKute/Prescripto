@@ -47,7 +47,7 @@ public class AdminService {
 	// Admin Login
 	public AuthResponse loginAdmin(AdminLoginRequest request) {
 		if (adminEmail.equals(request.getEmail()) && adminPassword.equals(request.getPassword())) {
-			String token = jwtUtils.generateToken(adminEmail);
+			String token = jwtUtils.generateToken(adminEmail, "ROLE_ADMIN");
 			return new AuthResponse(true, token, "Admin Login successful");
 		}
 		return new AuthResponse(false, "Invalid credentials");

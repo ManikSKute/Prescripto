@@ -49,7 +49,7 @@ const AddDoctor = () => {
       );
 
       const { data } = await axios.post(
-        backendUrl + "/api/admin/add-doctor",
+        backendUrl + "/api/doctors",
         formData,
         {
           headers: { aToken, "Content-Type": "multipart/form-data" },

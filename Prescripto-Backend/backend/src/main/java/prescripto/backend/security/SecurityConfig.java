@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +21,7 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
     @Autowired
@@ -38,15 +40,9 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 // Allow OPTIONS preflight requests for all endpoints
-                .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers("/api/auth/**", "/api/doctors").permitAll()
                 // Publicly accessible APIs
-                .requestMatchers(
-                    "/api/user/register", 
-                    "/api/user/login", 
-                    "/api/doctor/login", 
-                    "/api/doctor/list", 
-                    "/api/admin/login"
-                ).permitAll()
+                .requestMatchers("/api/auth/**", "/api/doctors").permitAll()
                 // All other endpoints require authentication
                 .anyRequest().authenticated()
             )
@@ -61,7 +57,7 @@ public class SecurityConfig {
         
         // Allow Frontends
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://localhost:5174"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         
         // Allow Custom Headers (token, aToken, dToken) sent by React
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "token", "aToken", "atoken", "dToken", "dtoken"));

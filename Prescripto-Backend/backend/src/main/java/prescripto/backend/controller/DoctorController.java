@@ -1,123 +1,71 @@
 package prescripto.backend.controller;
-
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import prescripto.backend.dto.*;
-import prescripto.backend.entity.Appointment;
 import prescripto.backend.entity.Doctor;
-import prescripto.backend.service.DoctorService;
-
+import prescripto.backend.service.*;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
 @RestController
-@RequestMapping("/api/doctor")
+@RequestMapping("/api/doctors")
 public class DoctorController {
+    @Autowired private DoctorService doctorService;
+    @Autowired private AdminService adminService;
 
-	@Autowired
-	private DoctorService doctorService;
+    private Long getDocId(HttpServletRequest request) {
+        return Long.parseLong((String) request.getAttribute("authenticatedSubject"));
+    }
 
-	private Long getDoctorIdFromRequest(HttpServletRequest request) {
-		String subject = (String) request.getAttribute("authenticatedSubject");
-		return subject != null ? Long.parseLong(subject) : null;
-	}
+    @GetMapping
+    public ResponseEntity<Map<String, Object>> getDoctorList() {
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", true);
+        response.put("doctors", doctorService.getAllDoctorsList());
+        return ResponseEntity.ok(response);
+    }
 
-	@PostMapping("/login")
-	public ResponseEntity<AuthResponse> loginDoctor(@RequestBody DoctorLoginRequest request) {
-		AuthResponse response = doctorService.loginDoctor(request);
-		return ResponseEntity.ok(response);
-	}
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<AuthResponse> addDoctor(
+            @RequestPart("docData") AddDoctorRequest request,
+            @RequestPart(value = "image", required = false) MultipartFile imageFile) {
+        return ResponseEntity.ok(adminService.addDoctor(request, imageFile));
+    }
 
-	@GetMapping("/list")
-	public ResponseEntity<Map<String, Object>> getDoctorList() {
-		List<Doctor> doctors = doctorService.getAllDoctorsList();
-		Map<String, Object> response = new HashMap<>();
-		response.put("success", true);
-		response.put("doctors", doctors);
-		return ResponseEntity.ok(response);
-	}
+    @GetMapping("/me")
+    @PreAuthorize("hasRole('DOCTOR')")
+    public ResponseEntity<Map<String, Object>> getProfile(HttpServletRequest request) {
+        Doctor doctor = doctorService.getDoctorProfile(getDocId(request));
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", doctor != null);
+        if (doctor != null) response.put("profileData", doctor);
+        else response.put("message", "Doctor profile not found");
+        return ResponseEntity.ok(response);
+    }
 
-	@PostMapping("/change-availability")
-	public ResponseEntity<AuthResponse> changeAvailability(@RequestBody ChangeAvailabilityRequest request) {
-		AuthResponse response = doctorService.changeAvailability(request.getDocId());
-		return ResponseEntity.ok(response);
-	}
+    @PatchMapping(value = "/me", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasRole('DOCTOR')")
+    public ResponseEntity<AuthResponse> updateProfile(
+            HttpServletRequest request,
+            @RequestPart("docData") UpdateDoctorProfileRequest profileRequest,
+            @RequestPart(value = "image", required = false) MultipartFile imageFile) {
+        return ResponseEntity.ok(doctorService.updateDoctorProfile(getDocId(request), profileRequest, imageFile));
+    }
 
-	@GetMapping("/appointments")
-	public ResponseEntity<Map<String, Object>> getDoctorAppointments(HttpServletRequest request) {
-		Long doctorId = getDoctorIdFromRequest(request);
-		List<Appointment> appointments = doctorService.getDoctorAppointments(doctorId);
+    @PatchMapping("/{id}/availability")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<AuthResponse> changeAvailability(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(doctorService.changeAvailability(id));
+    }
 
-		Map<String, Object> response = new HashMap<>();
-		response.put("success", true);
-		response.put("appointments", appointments);
-		return ResponseEntity.ok(response);
-	}
-
-	@PostMapping("/complete-appointment")
-	public ResponseEntity<AuthResponse> completeAppointment(HttpServletRequest request,
-			@RequestBody Map<String, Long> payload) {
-		Long doctorId = getDoctorIdFromRequest(request);
-		AuthResponse response = doctorService.completeAppointment(doctorId, payload);
-		return ResponseEntity.ok(response);
-	}
-
-	@PostMapping("/cancel-appointment")
-	public ResponseEntity<AuthResponse> cancelAppointment(HttpServletRequest request,
-			@RequestBody Map<String, Long> payload) {
-		Long doctorId = getDoctorIdFromRequest(request);
-		AuthResponse response = doctorService.cancelAppointmentByDoctor(doctorId, payload);
-		return ResponseEntity.ok(response);
-	}
-
-	@GetMapping("/profile")
-	public ResponseEntity<Map<String, Object>> getProfile(HttpServletRequest request) {
-		Long doctorId = getDoctorIdFromRequest(request);
-		Doctor doctor = doctorService.getDoctorProfile(doctorId);
-
-		Map<String, Object> response = new HashMap<>();
-		if (doctor != null) {
-			response.put("success", true);
-			response.put("profileData", doctor);
-		} else {
-			response.put("success", false);
-			response.put("message", "Doctor profile not found");
-		}
-		return ResponseEntity.ok(response);
-	}
-
-//    @PostMapping("/update-profile")
-//    public ResponseEntity<AuthResponse> updateProfile(HttpServletRequest request,
-//                                                       @RequestBody UpdateDoctorProfileRequest profileRequest) {
-//        Long doctorId = getDoctorIdFromRequest(request);
-//        AuthResponse response = doctorService.updateDoctorProfile(doctorId, profileRequest);
-//        return ResponseEntity.ok(response);
-//    }
-
-	@PostMapping(value = "/update-profile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ResponseEntity<AuthResponse> updateProfile(HttpServletRequest request,
-			@RequestPart("docData") UpdateDoctorProfileRequest profileRequest,
-			@RequestPart(value = "image", required = false) MultipartFile imageFile) {
-
-		Long doctorId = getDoctorIdFromRequest(request);
-		AuthResponse response = doctorService.updateDoctorProfile(doctorId, profileRequest, imageFile);
-		return ResponseEntity.ok(response);
-	}
-
-	@GetMapping("/dashboard")
-	public ResponseEntity<Map<String, Object>> getDashboard(HttpServletRequest request) {
-		Long doctorId = getDoctorIdFromRequest(request);
-		Map<String, Object> dashData = doctorService.getDoctorDashboardData(doctorId);
-
-		Map<String, Object> response = new HashMap<>();
-		response.put("success", true);
-		response.put("dashData", dashData);
-		return ResponseEntity.ok(response);
-	}
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<AuthResponse> deleteDoctor(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(adminService.deleteDoctor(id));
+    }
 }

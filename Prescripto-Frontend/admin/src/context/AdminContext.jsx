@@ -16,7 +16,7 @@
 
 //   const getAllDoctors = async () => {
 //     try {
-//       const { data } = await axios.get(backendUrl + "/api/admin/all-doctors", {
+//       const { data } = await axios.get(backendUrl + "/api/doctors", {
 //         headers: { aToken },
 //       });
 //       if (data.success) {
@@ -49,7 +49,7 @@
 
 //   const getAllAppointments = async () => {
 //     try {
-//       const { data } = await axios.get(backendUrl + "/api/admin/appointments", {
+//       const { data } = await axios.get(backendUrl + "/api/appointments", {
 //         headers: { aToken },
 //       });
 //       if (data.success) {
@@ -82,7 +82,7 @@
 
 //   const getDashData = async () => {
 //     try {
-//       const { data } = await axios.get(backendUrl + "/api/admin/dashboard", {
+//       const { data } = await axios.get(backendUrl + "/api/dashboard/admin", {
 //         headers: { aToken },
 //       });
 //       if (data.success) {
@@ -137,7 +137,7 @@ const AdminContextProvider = (props) => {
 
   const getAllDoctors = async () => {
     try {
-      const { data } = await axios.get(backendUrl + "/api/admin/all-doctors", {
+      const { data } = await axios.get(backendUrl + "/api/doctors", {
         headers: { aToken },
       });
       if (data.success) {
@@ -152,9 +152,9 @@ const AdminContextProvider = (props) => {
 
   const changeAvailability = async (docId) => {
     try {
-      const { data } = await axios.post(
-        backendUrl + "/api/doctor/change-availability",
-        { docId },
+      const { data } = await axios.patch(
+        backendUrl + "/api/doctors/" + docId + "/availability",
+        {},
         { headers: { aToken } },
       );
       if (data.success) {
@@ -171,9 +171,8 @@ const AdminContextProvider = (props) => {
   // Delete Doctor Function
   const deleteDoctor = async (docId) => {
     try {
-      const { data } = await axios.post(
-        backendUrl + "/api/admin/delete-doctor",
-        { docId },
+      const { data } = await axios.delete(
+        backendUrl + "/api/doctors/" + docId,
         { headers: { aToken } },
       );
       if (data.success) {
@@ -189,7 +188,7 @@ const AdminContextProvider = (props) => {
 
   const getAllAppointments = async () => {
     try {
-      const { data } = await axios.get(backendUrl + "/api/admin/appointments", {
+      const { data } = await axios.get(backendUrl + "/api/appointments", {
         headers: { aToken },
       });
       if (data.success) {
@@ -204,9 +203,8 @@ const AdminContextProvider = (props) => {
 
   const cancelAppointment = async (appointmentId) => {
     try {
-      const { data } = await axios.post(
-        backendUrl + "/api/admin/cancel-appointment",
-        { appointmentId },
+      const { data } = await axios.delete(
+        backendUrl + "/api/appointments/" + appointmentId,
         { headers: { aToken } },
       );
       if (data.success) {
@@ -222,7 +220,7 @@ const AdminContextProvider = (props) => {
 
   const getDashData = async () => {
     try {
-      const { data } = await axios.get(backendUrl + "/api/admin/dashboard", {
+      const { data } = await axios.get(backendUrl + "/api/dashboard/admin", {
         headers: { aToken },
       });
       if (data.success) {

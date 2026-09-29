@@ -44,7 +44,7 @@ public class DoctorService {
 			return new AuthResponse(false, "Invalid credentials");
 		}
 
-		String token = jwtUtils.generateToken(String.valueOf(doctor.getId()));
+		String token = jwtUtils.generateToken(String.valueOf(doctor.getId()), "ROLE_DOCTOR");
 		return new AuthResponse(true, token, "Login successful");
 	}
 

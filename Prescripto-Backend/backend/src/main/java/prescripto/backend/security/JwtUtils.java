@@ -29,8 +29,9 @@ public class JwtUtils {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateToken(String identifier) {
+    public String generateToken(String identifier, String role) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("role", role);
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(identifier)
@@ -48,6 +49,20 @@ public class JwtUtils {
                     .parseClaimsJws(token)
                     .getBody();
             return claims.getSubject();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    
+    public String extractRole(String token) {
+        try {
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+            return claims.get("role", String.class);
         } catch (Exception e) {
             return null;
         }

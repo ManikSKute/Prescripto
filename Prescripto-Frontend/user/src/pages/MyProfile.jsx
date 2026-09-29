@@ -210,8 +210,10 @@ const MyProfile = () => {
         formData.append("image", image);
       }
 
-      const { data } = await axios.post(
-        backendUrl + "/api/user/update-profile",
+      // const { data } = await axios.post(
+      //   backendUrl + "/api/user/update-profile",
+      const { data } = await axios.patch(
+        backendUrl + "/api/users/me",
         formData,
         {
           headers: { token, "Content-Type": "multipart/form-data" },

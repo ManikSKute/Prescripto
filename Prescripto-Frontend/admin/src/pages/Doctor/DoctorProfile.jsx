@@ -212,8 +212,8 @@ const DoctorProfile = () => {
         formData.append("image", image);
       }
 
-      const { data } = await axios.post(
-        backendUrl + "/api/doctor/update-profile",
+      const { data } = await axios.patch(
+        backendUrl + "/api/doctors/me",
         formData,
         {
           headers: { dToken, "Content-Type": "multipart/form-data" },

@@ -57,7 +57,7 @@ public class UserService {
 		user.setPassword(passwordEncoder.encode(request.getPassword()));
 
 		User savedUser = userRepository.save(user);
-		String token = jwtUtils.generateToken(String.valueOf(savedUser.getId()));
+		String token = jwtUtils.generateToken(String.valueOf(savedUser.getId()), "ROLE_USER");
 
 		return new AuthResponse(true, token, "User registered successfully");
 	}
@@ -74,7 +74,7 @@ public class UserService {
 			return new AuthResponse(false, "Invalid credentials");
 		}
 
-		String token = jwtUtils.generateToken(String.valueOf(user.getId()));
+		String token = jwtUtils.generateToken(String.valueOf(user.getId()), "ROLE_USER");
 		return new AuthResponse(true, token, "Login successful");
 	}
 
