@@ -16,7 +16,7 @@ const Sidebar = () => {
             className={({ isActive }) =>
               `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? "bg-[#F2F3FF] border-r-4 border-primary" : ""}`
             }
-            to={"/admin-dashboard"}
+            to={"/admin/dashboard"}
           >
             <img src={assets.home_icon} alt="" />
             <p className="hidden md:block">Dashboard</p>
@@ -25,7 +25,7 @@ const Sidebar = () => {
             className={({ isActive }) =>
               `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? "bg-[#F2F3FF] border-r-4 border-primary" : ""}`
             }
-            to={"/all-appointments"}
+            to={"/admin/appointments"}
           >
             <img src={assets.appointment_icon} alt="" />
             <p className="hidden md:block">Appointments</p>
@@ -34,7 +34,7 @@ const Sidebar = () => {
             className={({ isActive }) =>
               `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? "bg-[#F2F3FF] border-r-4 border-primary" : ""}`
             }
-            to={"/add-doctor"}
+            to={"/admin/doctors/add"}
           >
             <img src={assets.add_icon} alt="" />
             <p className="hidden md:block">Add Doctor</p>
@@ -43,7 +43,8 @@ const Sidebar = () => {
             className={({ isActive }) =>
               `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? "bg-[#F2F3FF] border-r-4 border-primary" : ""}`
             }
-            to={"/doctor-list"}
+            to={"/admin/doctors"}
+            end
           >
             <img src={assets.people_icon} alt="" />
             <p className="hidden md:block">Doctors List</p>
@@ -57,7 +58,7 @@ const Sidebar = () => {
             className={({ isActive }) =>
               `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? "bg-[#F2F3FF] border-r-4 border-primary" : ""}`
             }
-            to={"/doctor-dashboard"}
+            to={"/doctor/dashboard"}
           >
             <img src={assets.home_icon} alt="" />
             <p className="hidden md:block">Dashboard</p>
@@ -66,7 +67,7 @@ const Sidebar = () => {
             className={({ isActive }) =>
               `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? "bg-[#F2F3FF] border-r-4 border-primary" : ""}`
             }
-            to={"/doctor-appointments"}
+            to={"/doctor/appointments"}
           >
             <img src={assets.appointment_icon} alt="" />
             <p className="hidden md:block">Appointments</p>
@@ -75,7 +76,7 @@ const Sidebar = () => {
             className={({ isActive }) =>
               `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? "bg-[#F2F3FF] border-r-4 border-primary" : ""}`
             }
-            to={"/doctor-profile"}
+            to={"/doctor/profile"}
           >
             <img src={assets.people_icon} alt="" />
             <p className="hidden md:block">Profile</p>

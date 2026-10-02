@@ -120,22 +120,6 @@ public class DoctorService {
 	}
 
 	// Update Doctor Profile
-//    public AuthResponse updateDoctorProfile(Long doctorId, UpdateDoctorProfileRequest request) {
-//        Optional<Doctor> doctorOpt = doctorRepository.findById(doctorId);
-//        if (doctorOpt.isEmpty()) {
-//            return new AuthResponse(false, "Doctor not found");
-//        }
-//
-//        Doctor doctor = doctorOpt.get();
-//        if (request.getFees() != null) doctor.setFees(request.getFees());
-//        if (request.getAddressLine1() != null) doctor.setAddressLine1(request.getAddressLine1());
-//        if (request.getAddressLine2() != null) doctor.setAddressLine2(request.getAddressLine2());
-//        if (request.getAvailable() != null) doctor.setAvailable(request.getAvailable());
-//
-//        doctorRepository.save(doctor);
-//        return new AuthResponse(true, null, "Profile Updated");
-//    }
-
 	public AuthResponse updateDoctorProfile(Long doctorId, UpdateDoctorProfileRequest request,
 			MultipartFile imageFile) {
 		Optional<Doctor> doctorOpt = doctorRepository.findById(doctorId);

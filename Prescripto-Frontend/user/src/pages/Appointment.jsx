@@ -114,7 +114,7 @@ const Appointment = () => {
       if (data.success) {
         toast.success(data.message);
         getDoctorsData();
-        navigate("/my-appointments");
+        navigate("/appointments");
       } else {
         // Displays "Slot not available" toast returned from Spring Boot
         toast.error(data.message);

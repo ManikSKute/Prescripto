@@ -84,30 +84,6 @@ public class UserService {
 	}
 
 	// Update User Profile
-//	public AuthResponse updateUserProfile(Long userId, UpdateProfileRequest request) {
-//		Optional<User> userOptional = userRepository.findById(userId);
-//		if (userOptional.isEmpty()) {
-//			return new AuthResponse(false, "User not found");
-//		}
-//
-//		User user = userOptional.get();
-//		if (request.getName() != null)
-//			user.setName(request.getName());
-//		if (request.getPhone() != null)
-//			user.setPhone(request.getPhone());
-//		if (request.getDob() != null)
-//			user.setDob(request.getDob());
-//		if (request.getGender() != null)
-//			user.setGender(request.getGender());
-//		if (request.getAddressLine1() != null)
-//			user.setAddressLine1(request.getAddressLine1());
-//		if (request.getAddressLine2() != null)
-//			user.setAddressLine2(request.getAddressLine2());
-//
-//		userRepository.save(user);
-//		return new AuthResponse(true, null, "Profile Updated");
-//	}
-
 	public AuthResponse updateUserProfile(Long userId, UpdateProfileRequest request, MultipartFile imageFile) {
 		Optional<User> userOptional = userRepository.findById(userId);
 		if (userOptional.isEmpty()) {

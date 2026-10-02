@@ -17,7 +17,6 @@ const AppContextProvider = (props) => {
   // Fetch All Doctors List from Spring Boot API
   const getDoctorsData = async () => {
     try {
-      // const { data } = await axios.get(backendUrl + "/api/doctor/list");
       const { data } = await axios.get(backendUrl + "/api/doctors");
       if (data.success) {
         setDoctors(data.doctors);
@@ -33,7 +32,6 @@ const AppContextProvider = (props) => {
   // Load Authenticated User Profile Data
   const loadUserProfileData = async () => {
     try {
-      // const { data } = await axios.get(backendUrl + "/api/user/get-profile", {
       const { data } = await axios.get(backendUrl + "/api/users/me", {
         headers: { token },
       });
