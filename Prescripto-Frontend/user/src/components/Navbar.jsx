@@ -43,7 +43,7 @@ const Navbar = () => {
       <div className="flex items-center gap-4">
         {!token && (
           <button
-            onClick={() => window.open("http://localhost:5174", "_blank")}
+            onClick={() => window.open(import.meta.env.VITE_ADMIN_URL, "_blank")}
             className="border border-gray-400 px-5 py-2 rounded-full font-light text-xs hidden md:block cursor-pointer hover:bg-gray-100 hover:text-black transition-all"
           >
             Admin / Doctor Panel
@@ -119,7 +119,7 @@ const Navbar = () => {
               <p className="px-4 py-2 rounded inline-block">CONTACT</p>
             </NavLink>
             {!token && (
-              <a href="http://localhost:5174" target="_blank" rel="noopener noreferrer" className="mt-4 border border-gray-400 px-6 py-2 rounded-full font-light text-sm hover:bg-gray-100 hover:text-black transition-all">
+              <a href={import.meta.env.VITE_ADMIN_URL} target="_blank" rel="noopener noreferrer" className="mt-4 border border-gray-400 px-6 py-2 rounded-full font-light text-sm hover:bg-gray-100 hover:text-black transition-all">
                 Admin / Doctor Panel
               </a>
             )}
