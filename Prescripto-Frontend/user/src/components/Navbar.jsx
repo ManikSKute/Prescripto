@@ -41,6 +41,14 @@ const Navbar = () => {
         </NavLink>
       </ul>
       <div className="flex items-center gap-4">
+        {!token && (
+          <button
+            onClick={() => window.open("http://localhost:5174", "_blank")}
+            className="border border-gray-400 px-5 py-2 rounded-full font-light text-xs hidden md:block cursor-pointer hover:bg-gray-100 hover:text-black transition-all"
+          >
+            Admin / Doctor Panel
+          </button>
+        )}
         {token && userData ? (
           <div className="flex items-center gap-2 cursor-pointer group relative">
             <img
@@ -110,6 +118,11 @@ const Navbar = () => {
             <NavLink onClick={() => setShowMenu(false)} to="/contact">
               <p className="px-4 py-2 rounded inline-block">CONTACT</p>
             </NavLink>
+            {!token && (
+              <a href="http://localhost:5174" target="_blank" rel="noopener noreferrer" className="mt-4 border border-gray-400 px-6 py-2 rounded-full font-light text-sm hover:bg-gray-100 hover:text-black transition-all">
+                Admin / Doctor Panel
+              </a>
+            )}
           </ul>
         </div>
       </div>
