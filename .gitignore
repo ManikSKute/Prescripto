@@ -1,2 +1,5 @@
-
 .env
+
+# Global IDE and Secrets
+.metadata/
+application-dev.properties
