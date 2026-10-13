@@ -38,10 +38,8 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                // Allow OPTIONS preflight requests for all endpoints
-                .requestMatchers("/api/auth/**", "/api/doctors").permitAll()
                 // Publicly accessible APIs
-                .requestMatchers("/api/auth/**", "/api/doctors").permitAll()
+                .requestMatchers("/api/auth/**", "/api/doctors", "/api/health").permitAll()
                 // All other endpoints require authentication
                 .anyRequest().authenticated()
             )
@@ -56,7 +54,7 @@ public class SecurityConfig {
         
         // Allow all frontend domains using patterns
         configuration.setAllowedOriginPatterns(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"));
         
         // Allow Custom Headers (token, aToken, dToken) sent by React
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "token", "aToken", "atoken", "dToken", "dtoken"));
