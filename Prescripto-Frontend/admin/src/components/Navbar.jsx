@@ -22,7 +22,7 @@ const Navbar = () => {
     <div className="flex justify-between items-center px-4 sm:px-10 py-3 border-b bg-white">
       <div className="flex items-center gap-2 text-xs">
         <img
-          className="w-36 sm:w-40 cursor-pointer"
+          className="w-32 sm:w-40 cursor-pointer"
           src={assets.admin_logo}
           alt=""
         />
@@ -30,12 +30,22 @@ const Navbar = () => {
           {aToken ? "Admin" : "Doctor"}
         </p>
       </div>
-      <button
-        onClick={logout}
-        className="bg-primary text-white text-sm px-10 py-2 rounded-full cursor-pointer"
-      >
-        Logout
-      </button>
+      <div className="flex items-center gap-2 sm:gap-4">
+        {import.meta.env.VITE_USER_URL && (
+          <button
+            onClick={() => window.open(import.meta.env.VITE_USER_URL, "_blank")}
+            className="border border-gray-400 px-3 sm:px-5 py-1.5 sm:py-2 rounded-full font-light text-xs cursor-pointer hover:bg-gray-100 transition-all"
+          >
+            Patient Site
+          </button>
+        )}
+        <button
+          onClick={logout}
+          className="bg-primary text-white text-xs sm:text-sm px-6 sm:px-10 py-1.5 sm:py-2 rounded-full cursor-pointer"
+        >
+          Logout
+        </button>
+      </div>
     </div>
   );
 };

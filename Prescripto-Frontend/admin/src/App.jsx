@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "./components/Navbar";
@@ -25,19 +25,55 @@ const App = () => {
       <Navbar />
       <div className="flex items-start">
         <Sidebar />
-        <Routes>
-          {/* Admin Routes */}
-          <Route path="/" element={<></>} />
-          <Route path="/admin/dashboard" element={<Dashboard />} />
-          <Route path="/admin/appointments" element={<AllAppointments />} />
-          <Route path="/admin/doctors/add" element={<AddDoctor />} />
-          <Route path="/admin/doctors" element={<DoctorsList />} />
+        <div className="flex-1 w-full min-w-0">
+          <Routes>
+            {/* Root / Default Redirect */}
+            <Route
+              path="/"
+              element={
+                aToken ? (
+                  <Navigate to="/admin/dashboard" replace />
+                ) : (
+                  <Navigate to="/doctor/dashboard" replace />
+                )
+              }
+            />
+            <Route
+              path="/admin"
+              element={<Navigate to="/admin/dashboard" replace />}
+            />
+            <Route
+              path="/doctor"
+              element={<Navigate to="/doctor/dashboard" replace />}
+            />
 
-          {/* Doctor Routes */}
-          <Route path="/doctor/dashboard" element={<DoctorDashboard />} />
-          <Route path="/doctor/appointments" element={<DoctorAppointments />} />
-          <Route path="/doctor/profile" element={<DoctorProfile />} />
-        </Routes>
+            {/* Admin Routes */}
+            <Route path="/admin/dashboard" element={<Dashboard />} />
+            <Route path="/admin/appointments" element={<AllAppointments />} />
+            <Route path="/admin/doctors/add" element={<AddDoctor />} />
+            <Route path="/admin/doctors" element={<DoctorsList />} />
+
+            {/* Doctor Routes */}
+            <Route path="/doctor/dashboard" element={<DoctorDashboard />} />
+            <Route
+              path="/doctor/appointments"
+              element={<DoctorAppointments />}
+            />
+            <Route path="/doctor/profile" element={<DoctorProfile />} />
+
+            {/* Catch-all redirect */}
+            <Route
+              path="*"
+              element={
+                aToken ? (
+                  <Navigate to="/admin/dashboard" replace />
+                ) : (
+                  <Navigate to="/doctor/dashboard" replace />
+                )
+              }
+            />
+          </Routes>
+        </div>
       </div>
     </div>
   ) : (

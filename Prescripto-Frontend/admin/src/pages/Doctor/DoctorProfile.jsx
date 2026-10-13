@@ -68,8 +68,8 @@ const DoctorProfile = () => {
 
   return (
     profileData && (
-      <div>
-        <div className="flex flex-col gap-4 m-5">
+      <div className="p-3 sm:p-6 w-full max-w-6xl">
+        <div className="flex flex-col gap-4">
           <div>
             {isEdit ? (
               <label htmlFor="doc-image">

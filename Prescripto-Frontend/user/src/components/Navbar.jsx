@@ -7,10 +7,13 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { token, setToken, userData } = useContext(AppContext);
   const [showMenu, setShowMenu] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   const logout = () => {
     setToken(false);
     localStorage.removeItem("token");
+    setShowDropdown(false);
+    setShowMenu(false);
     navigate("/login");
   };
 
@@ -18,7 +21,7 @@ const Navbar = () => {
     <div className="flex items-center justify-between text-sm py-4 mb-5 border-b border-b-gray-400">
       <img
         onClick={() => navigate("/")}
-        className="w-44 cursor-pointer"
+        className="w-36 sm:w-44 cursor-pointer"
         src={assets.logo}
         alt=""
       />
@@ -40,33 +43,49 @@ const Navbar = () => {
           <hr className="border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden" />
         </NavLink>
       </ul>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3 sm:gap-4">
         {!token && (
           <button
-            onClick={() => window.open(import.meta.env.VITE_ADMIN_URL, "_blank")}
+            onClick={() =>
+              window.open(import.meta.env.VITE_ADMIN_URL, "_blank")
+            }
             className="border border-gray-400 px-5 py-2 rounded-full font-light text-xs hidden md:block cursor-pointer hover:bg-gray-100 hover:text-black transition-all"
           >
             Admin / Doctor Panel
           </button>
         )}
         {token && userData ? (
-          <div className="flex items-center gap-2 cursor-pointer group relative">
+          <div
+            onClick={() => setShowDropdown((prev) => !prev)}
+            className="flex items-center gap-2 cursor-pointer group relative"
+          >
             <img
               className="w-8 rounded-full"
               src={userData.image ? userData.image : assets.profile_pic}
               alt=""
             />
             <img className="w-2.5" src={assets.dropdown_icon} alt="" />
-            <div className="absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 z-20 hidden group-hover:block">
-              <div className="min-w-48 bg-stone-100 rounded flex flex-col gap-4 p-4">
+            <div
+              className={`absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 z-20 ${showDropdown ? "block" : "hidden"} md:group-hover:block`}
+            >
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="min-w-48 bg-stone-100 rounded flex flex-col gap-4 p-4 shadow-md"
+              >
                 <p
-                  onClick={() => navigate("/profile")}
+                  onClick={() => {
+                    setShowDropdown(false);
+                    navigate("/profile");
+                  }}
                   className="hover:text-black cursor-pointer"
                 >
                   My Profile
                 </p>
                 <p
-                  onClick={() => navigate("/appointments")}
+                  onClick={() => {
+                    setShowDropdown(false);
+                    navigate("/appointments");
+                  }}
                   className="hover:text-black cursor-pointer"
                 >
                   My Appointments
@@ -80,14 +99,14 @@ const Navbar = () => {
         ) : (
           <button
             onClick={() => navigate("/login")}
-            className="bg-primary text-white px-8 py-3 rounded-full font-light hidden md:block cursor-pointer"
+            className="bg-primary text-white px-4 py-2 md:px-8 md:py-3 rounded-full font-light text-xs md:text-sm cursor-pointer"
           >
             Create account
           </button>
         )}
         <img
           onClick={() => setShowMenu(true)}
-          className="w-6 md:hidden"
+          className="w-6 md:hidden cursor-pointer"
           src={assets.menu_icon}
           alt=""
         />
@@ -99,7 +118,7 @@ const Navbar = () => {
           <div className="flex items-center justify-between px-5 py-6">
             <img className="w-36" src={assets.logo} alt="" />
             <img
-              className="w-7"
+              className="w-7 cursor-pointer"
               onClick={() => setShowMenu(false)}
               src={assets.cross_icon}
               alt=""
@@ -119,9 +138,25 @@ const Navbar = () => {
               <p className="px-4 py-2 rounded inline-block">CONTACT</p>
             </NavLink>
             {!token && (
-              <a href={import.meta.env.VITE_ADMIN_URL} target="_blank" rel="noopener noreferrer" className="mt-4 border border-gray-400 px-6 py-2 rounded-full font-light text-sm hover:bg-gray-100 hover:text-black transition-all">
-                Admin / Doctor Panel
-              </a>
+              <>
+                <button
+                  onClick={() => {
+                    setShowMenu(false);
+                    navigate("/login");
+                  }}
+                  className="mt-3 bg-primary text-white px-8 py-2.5 rounded-full font-light text-sm cursor-pointer"
+                >
+                  Create account
+                </button>
+                <a
+                  href={import.meta.env.VITE_ADMIN_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 border border-gray-400 px-6 py-2 rounded-full font-light text-sm hover:bg-gray-100 hover:text-black transition-all"
+                >
+                  Admin / Doctor Panel
+                </a>
+              </>
             )}
           </ul>
         </div>

@@ -21,9 +21,9 @@ const DoctorDashboard = () => {
 
   return (
     dashData && (
-      <div className="m-5">
+      <div className="p-3 sm:p-6 w-full max-w-6xl">
         <div className="flex flex-wrap gap-3">
-          <div className="flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all">
+          <div className="flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all shadow-sm">
             <img className="w-14" src={assets.earning_icon} alt="" />
             <div>
               <p className="text-xl font-semibold text-gray-600">
@@ -33,7 +33,7 @@ const DoctorDashboard = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all">
+          <div className="flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all shadow-sm">
             <img className="w-14" src={assets.appointments_icon} alt="" />
             <div>
               <p className="text-xl font-semibold text-gray-600">
@@ -43,7 +43,7 @@ const DoctorDashboard = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all">
+          <div className="flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all shadow-sm">
             <img className="w-14" src={assets.patients_icon} alt="" />
             <div>
               <p className="text-xl font-semibold text-gray-600">
@@ -54,20 +54,20 @@ const DoctorDashboard = () => {
           </div>
         </div>
 
-        <div className="bg-white mt-10 rounded border">
+        <div className="bg-white mt-10 rounded border shadow-sm">
           <div className="flex items-center gap-2.5 px-4 py-4 border-b">
             <img src={assets.list_icon} alt="" />
-            <p className="font-semibold">Latest Bookings</p>
+            <p className="font-semibold text-gray-800">Latest Bookings</p>
           </div>
 
-          <div className="pt-4 border border-t-0">
+          <div className="pt-2">
             {dashData.latestAppointments.map((item, index) => (
               <div
-                className="flex items-center px-6 py-3 gap-3 hover:bg-gray-100"
+                className="flex items-center px-6 py-3 gap-3 hover:bg-gray-50 border-b last:border-b-0 transition-colors"
                 key={index}
               >
                 <img
-                  className="rounded-full w-10"
+                  className="rounded-full w-10 h-10 object-cover"
                   src={item.user.image}
                   alt=""
                 />
@@ -84,18 +84,20 @@ const DoctorDashboard = () => {
                     Completed
                   </p>
                 ) : (
-                  <div className="flex">
+                  <div className="flex items-center gap-1.5">
                     <img
                       onClick={() => cancelAppointment(item.id)}
-                      className="w-10 cursor-pointer"
+                      className="w-8 cursor-pointer hover:opacity-75 transition-opacity"
                       src={assets.cancel_icon}
-                      alt=""
+                      alt="Cancel"
+                      title="Cancel Appointment"
                     />
                     <img
                       onClick={() => completeAppointment(item.id)}
-                      className="w-10 cursor-pointer"
+                      className="w-8 cursor-pointer hover:opacity-75 transition-opacity"
                       src={assets.tick_icon}
-                      alt=""
+                      alt="Complete"
+                      title="Complete Appointment"
                     />
                   </div>
                 )}

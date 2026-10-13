@@ -48,13 +48,9 @@ const AddDoctor = () => {
         new Blob([JSON.stringify(docData)], { type: "application/json" }),
       );
 
-      const { data } = await axios.post(
-        backendUrl + "/api/doctors",
-        formData,
-        {
-          headers: { aToken, "Content-Type": "multipart/form-data" },
-        },
-      );
+      const { data } = await axios.post(backendUrl + "/api/doctors", formData, {
+        headers: { aToken, "Content-Type": "multipart/form-data" },
+      });
 
       if (data.success) {
         toast.success(data.message);
@@ -76,8 +72,8 @@ const AddDoctor = () => {
   };
 
   return (
-    <form onSubmit={onSubmitHandler} className="m-5 w-full">
-      <p className="mb-3 text-lg font-medium">Add Doctor</p>
+    <form onSubmit={onSubmitHandler} className="p-3 sm:p-6 w-full max-w-6xl">
+      <p className="mb-3 text-lg font-medium text-gray-800">Add Doctor</p>
 
       <div className="bg-white px-8 py-8 border rounded w-full max-w-4xl max-h-[80vh] overflow-y-scroll">
         <div className="flex items-center gap-4 mb-8 text-gray-500">
